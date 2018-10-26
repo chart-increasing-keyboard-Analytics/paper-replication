@@ -5,9 +5,7 @@ Replication of the paper Built to last or built too fast?: evaluating prediction
 ## Data
 
 Pull the data from [TravisTorrent](https://travistorrent.testroots.org/page_access/).
-To run our experiment, download and extract to the project root the data folder from the link [1].
-
-[1] https://drive.google.com/file/d/1PFv_-HHB2aIpxm8xfqCbB9QYfhKl4zB8/view?usp=sharing
+To run our experiment, download and extract to the project root the data folder from the link https://drive.google.com/file/d/1PFv_-HHB2aIpxm8xfqCbB9QYfhKl4zB8/view?usp=sharing.
 
 ## References
 
