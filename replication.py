@@ -271,15 +271,8 @@ if __name__ == "__main__":
     data_scaler = MinMaxScaler(feature_range=(0, 28))
     X = data_scaler.fit_transform(X)
     
-    test_knn(logger, X, y)
     sleep(1)
-    test_xgboost(logger, X, y)
-    sleep(1)
-    test_svm(logger, X, y)
-    sleep(1)
-    test_linear_regression(logger, X, y)
-    sleep(1)
-    test_linear_regression(logger, X, y)
+    test_neural_network(logger, X, y)
     
     logger.close()
     
