@@ -154,7 +154,7 @@ def test_linear_regression(logger, X, y):
     
     X_input =  Input(shape=(X.shape[1],), name = 'Input')
     X = Dense(1, activation = 'linear', name='Output')(X_input)
-    model =  Model(inputs = X_input, outputs = X, name = "linear_reg")
+    model =  Model(inputs = X_input, outputs = X, name = "LR_SGD")
     sgd = SGD(lr=0.04)
     model.compile(loss= rmse_metric, optimizer=sgd, metrics = [r2_metric])
     
@@ -168,11 +168,13 @@ def test_linear_regression(logger, X, y):
     loss = [elem / 10**3 for elem in history_callback.history['loss']]
     plot_training_evol(loss, plt_title = "RMSE during training",
                        x_label = "Epoch", y_label = "RMSE",
-                       fig_title = "rmse.png", linecolor="r")
+                       fig_title = logger.get_output_file("lr_rmse.png"), 
+                       linecolor="r")
     plot_training_evol(history_callback.history['r2_metric'], 
                        plt_title = "R-squared during training",
                        x_label = "Epoch", y_label = "R-squared",
-                       fig_title = "r2.png", linecolor="b")
+                       fig_title = logger.get_output_file("lr_r2.png"), 
+                       linecolor="b")
 
 
 def test_neural_network(logger, X, y):
@@ -180,17 +182,18 @@ def test_neural_network(logger, X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
     
     
-    X_input =  Input(shape=(X.shape[1],), name = 'Input')
-    X = Dense(units = X.shape[1] * 2, activation = 'relu', 
+    X_input =  Input(shape=(X.shape[1] * 2,), name = 'Input')
+    X = Dense(units = X_train.shape[1], activation = 'relu', 
               name = 'Hidden_1')(X_input)
-    X = Dense(units = X.shape[1], activation = 'relu', 
+    X = Dense(units = X_train.shape[1], activation = 'relu', 
               name = 'Hidden_2')(X)
     X = Dropout(rate = 0.5, name = "Dropout_half")(X)
-    X = Dense(units = X.shape[1] // 2, activation = 'relu', 
+    X = Dense(units = X_train.shape[1] // 2, activation = 'relu', 
               name = 'Hidden_3')(X)
     X = Dense(units = 1, name = 'Output')(X)
     model = Model(inputs = X_input, outputs = X, name = "FC_FN_halfFN_1")
     model.compile(optimizer = "adam", loss = rmse_metric, metrics = [r2_metric])
+    model.summary()
     
     
     callbacks = []
@@ -206,11 +209,13 @@ def test_neural_network(logger, X, y):
     loss = [elem / 10**3 for elem in history_callback.history['loss']]
     plot_training_evol(loss, plt_title = "RMSE during training",
                        x_label = "Epoch", y_label = "RMSE",
-                       fig_title = "rmse.png", linecolor="r")
+                       fig_title = logger.get_output_file("nn_rmse.png"), 
+                       linecolor="r")
     plot_training_evol(history_callback.history['r2_metric'], 
                        plt_title = "R-squared during training",
                        x_label = "Epoch", y_label = "R-squared",
-                       fig_title = "r2.png", linecolor="b")
+                       fig_title = logger.get_output_file("nn_r2.png"), 
+                       linecolor="b")
     
     
 if __name__ == "__main__":
@@ -264,6 +269,7 @@ if __name__ == "__main__":
     data_scaler = MinMaxScaler(feature_range=(0, 28))
     X = data_scaler.fit_transform(X)
     
+    '''
     test_knn(logger, X, y)
     sleep(1)
     test_xgboost(logger, X, y)
@@ -272,7 +278,8 @@ if __name__ == "__main__":
     sleep(1)
     test_linear_regression(logger, X, y)
     sleep(1)
-    test_neural_network(Logger, X, y)
+    '''
+    test_neural_network(logger, X, y)
     
     logger.close()
     
