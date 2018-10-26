@@ -31,7 +31,11 @@ def plot_training_evol(metric_history, plt_title, x_label, y_label, fig_title,
                        linecolor):
     sns.set()
     epochs = [i for i in range(1, len(metric_history) + 1)]
-    plt.xticks(epochs, [str(i) for i in epochs])
+    if len(epochs) <= 20:
+        plt.xticks(epochs, [str(i) for i in epochs])
+    else:
+        plt.xticks([e for e in epochs if e % 4 == 0])
+        
     plt.title(plt_title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
@@ -182,16 +186,14 @@ def test_neural_network(logger, X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
     
     
-    X_input =  Input(shape=(X.shape[1] * 2,), name = 'Input')
-    X = Dense(units = X_train.shape[1], activation = 'relu', 
+    X_input =  Input(shape=(X.shape[1],), name = 'Input')
+    X = Dense(units = X_train.shape[1] * 2, activation = 'relu', 
               name = 'Hidden_1')(X_input)
-    X = Dense(units = X_train.shape[1], activation = 'relu', 
-              name = 'Hidden_2')(X)
     X = Dropout(rate = 0.5, name = "Dropout_half")(X)
-    X = Dense(units = X_train.shape[1] // 2, activation = 'relu', 
+    X = Dense(units = X_train.shape[1], activation = 'relu', 
               name = 'Hidden_3')(X)
     X = Dense(units = 1, name = 'Output')(X)
-    model = Model(inputs = X_input, outputs = X, name = "FC_FN_halfFN_1")
+    model = Model(inputs = X_input, outputs = X, name = "FC_FN2_FN_halfFN")
     model.compile(optimizer = "adam", loss = rmse_metric, metrics = [r2_metric])
     model.summary()
     
@@ -269,7 +271,6 @@ if __name__ == "__main__":
     data_scaler = MinMaxScaler(feature_range=(0, 28))
     X = data_scaler.fit_transform(X)
     
-    '''
     test_knn(logger, X, y)
     sleep(1)
     test_xgboost(logger, X, y)
@@ -278,8 +279,7 @@ if __name__ == "__main__":
     sleep(1)
     test_linear_regression(logger, X, y)
     sleep(1)
-    '''
-    test_neural_network(logger, X, y)
+    test_linear_regression(logger, X, y)
     
     logger.close()
     
