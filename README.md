@@ -4,7 +4,12 @@ Replication of the paper Built to last or built too fast?: evaluating prediction
 
 ## Data
 
-Pull the data from [TravisTorrent](https://travistorrent.testroots.org/page_access/)
+Pull the data from [TravisTorrent](https://travistorrent.testroots.org/page_access/).
+To run our experiment, download and extract to the project root the data folder from the link https://drive.google.com/file/d/1PFv_-HHB2aIpxm8xfqCbB9QYfhKl4zB8/view?usp=sharing.
+
+## Environment
+
+Run the script `replication.py` in an [Anaconda](https://www.anaconda.com/) environment with additionally [`keras`](https://pypi.org/project/Keras/) and [`scikit-learn`](https://pypi.org/project/scikit-learn/) installed.
 
 ## References
 
